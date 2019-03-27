@@ -1,0 +1,102 @@
+#! /usr/bin/env sh
+
+# to execute, `cd` to the same directory as this file then run `./mac_os`
+# Note: can run from anywhere by specifying the full path, for example if you
+# cloned this repo to your home directory you'd run `~/0/setup/mac_os`
+
+# this script is expected to work on macOS. On Linux and Windows Subsystem for
+# Linux (WSL) it should theoretically install everything except Visual Studio
+# Code but we make no guarantees. To install Visual Studio Code see their
+# website - https://code.visualstudio.com
+
+# for manual macOS instructions see here - https://docs.python-guide.org/starting/install3/osx/
+# too many Linux variants to offer detailed manual instructions sadly :(
+
+# on macOS
+[[ $(uname) == 'Darwin' ]] && {
+  # only attempt to install if not already installed
+  xcode-select -p > /dev/null 2>&1 || xcode-select --install || {
+    echo 'Installing developer tools failed, try installing developer tools'\
+          'through the manual instructions then rerun this script.'
+    exit 1
+  }
+}
+
+[[ $(uname == 'Darwin' ]] && { # on macOS
+  # require ruby dependency
+  command -v ruby > /dev/null 2>&1 || {
+    # install Homebrew - https://brew.sh
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" || {
+      echo 'Installing homebrew failed, ask a peer mentor for help.'
+      exit 1
+    }
+  } || {
+    echo "You don't seem to have ruby installed. This should come by default"\
+          'on macOS, see a peer mentor for help.'
+    exit 1
+  }
+} || { # on Linux/WSL
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)" && {
+    test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+    test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+    test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
+    echo "eval \$($(brew --prefix)/bin/brew shellenv)" >> ~/.profile
+  } || {
+    echo 'Installation failed. Make sure you have the expected dependencies -'\
+          'https://docs.brew.sh/Homebrew-on-Linux#linuxwsl-requirements. If'\
+          "you're still having issues ask a peer mentor for help."
+    exit 1
+  }
+}
+
+# add Homebrew installation directory to PATH environment variable if it's not
+# already there
+# TODO: may be unnecessary, test having never installed Homebrew before
+echo "$PATH" | grep -q "/usr/local/bin" || {
+  echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.profile && {
+    source ~/.profile
+    echo "$PATH" | grep -q "/usr/local/bin" || {
+      echo 'Adding to PATH and/or sourcing seems to have failed, ask a peer'\
+            'mentor for help.'
+    }
+  }
+}
+
+# install visual studio code if not already installed (only on macOS)
+# Visual Studio Code website - https://code.visualstudio.com
+[[ $(uname == 'Darwin' ]] && {
+  brew cask list visual-studio-code > /dev/null || {
+    brew cask install visual-studio-code || {
+      echo 'Installing VSCode failed, download the installer here - '\
+            'https://code.visualstudio.com/ and run manually. Rerun this'\
+            'script after installing.'
+    }
+  }
+}
+
+# install Python if we don't see a `3.7` version
+# a little brittle here, would be nicer to see if there are any versions later
+# than 3.6 installed in the future
+brew list --versions python | grep -q "3.7" || brew install python || {
+  echo 'Installing Python failed, ask a peer mentor for help.'
+}
+
+# let student know whether they can use `python` & `pip` or `python3` & `pip3`
+# same caveat about version numbers as above
+# could also use `command -v python3`, inverting the logic. use version numbers
+# to default to `python` over `python3`
+
+# `python -V` wrote to `stderr` for versions before `3.4`, therefore pipe both
+# `stderr` & `stdout` to grep
+# ref - https://stackoverflow.com/a/32401305
+python -V 2>&1 | grep -q "3.7" && {
+  echo 'Use python & pip'
+} || {
+  # no need to redirect `stderr`
+  python3 -V | grep -q "3.7" && {
+    echo 'Use python3 & pip3'
+  } || {
+    echo 'Something seems to have gone wrong with your python installation,'\
+          'ask a peer mentor or the professor for help.'
+  }
+}
