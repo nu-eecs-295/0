@@ -1,0 +1,3 @@
+[submodule ".295"]
+	path = .295
+	url = git@github.com:cs-nu/295.git
