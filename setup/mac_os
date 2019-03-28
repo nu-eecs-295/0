@@ -22,7 +22,7 @@
   }
 }
 
-[[ $(uname == 'Darwin' ]] && { # on macOS
+[[ $(uname) == 'Darwin' ]] && { # on macOS
   # require ruby dependency
   command -v ruby > /dev/null 2>&1 || {
     # install Homebrew - https://brew.sh
@@ -64,8 +64,8 @@ echo "$PATH" | grep -q "/usr/local/bin" || {
 
 # install visual studio code if not already installed (only on macOS)
 # Visual Studio Code website - https://code.visualstudio.com
-[[ $(uname == 'Darwin' ]] && {
-  brew cask list visual-studio-code > /dev/null || {
+[[ $(uname) == 'Darwin' ]] && {
+  brew cask list visual-studio-code > /dev/null 2>&1 || {
     brew cask install visual-studio-code || {
       echo 'Installing VSCode failed, download the installer here - '\
             'https://code.visualstudio.com/ and run manually. Rerun this'\
@@ -89,12 +89,13 @@ brew list --versions python | grep -q "3.7" || brew install python || {
 # `python -V` wrote to `stderr` for versions before `3.4`, therefore pipe both
 # `stderr` & `stdout` to grep
 # ref - https://stackoverflow.com/a/32401305
+echo "\n"
 python -V 2>&1 | grep -q "3.7" && {
-  echo 'Use python & pip'
+  echo "All done! 🎉 Use python & pip"
 } || {
   # no need to redirect `stderr`
   python3 -V | grep -q "3.7" && {
-    echo 'Use python3 & pip3'
+    echo "All done! 🎉 Use python3 & pip3"
   } || {
     echo 'Something seems to have gone wrong with your python installation,'\
           'ask a peer mentor or the professor for help.'

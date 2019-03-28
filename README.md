@@ -1,103 +1,108 @@
----
-title: "Assignment 0: Hello World"
-author: EECS 295
-date: 'Due SOMETIME'
-geometry: margin=1in
-urlcolor: cyan
----
+# Assignment 0: Hello World
 
-# Introduction
+## Introduction
 
-This exercise will guide you in setting up your working environment for the quarter. By the end you'll be able to write a simple Python program that outputs "Hello World!" to the screen and will be ready for future assignments. First we'll walk through installing Python (our programming language for this course), then installing Visual Studio Code (VSCode, our text editor for this course) and finally writing our first Python program.
+This exercise will guide you in setting up your working environment for the quarter. By the end you'll be able to write a simple program that outputs "Hello World!" to the screen and will be ready for future assignments. We'll start by installing Python 🐍 (our programming language for this course), installing and setting up Visual Studio Code (our text editor for this course), and finally writing our first Python program.
 
 This guide is pretty long with a lot of instructions. I sincerely apologize for that but please make sure everything works for you at all stages along the way so that you don't have to worry about your environment for the rest of the course. And if you have any issues feel free to ask a peer mentor! Okay with that disclaimer let's get started!
 
-# Automated Installation
+## Automated Installation
 
-We've provided installation scripts for macOS and Windows. The macOS script should theoretically also work on Linux and the Windows Subsystem for Linux (WSL) but we make no guarantees.
+We've provided installation scripts for macOS and Windows in the `setup` folder. The macOS script should theoretically also work on Linux and the Windows Subsystem for Linux (WSL) but we make no guarantees.
 
 Both scripts install the newest version of [Python](https://www.python.org/) and [Visual Studio Code](https://code.visualstudio.com) (Linux and WSL users must install VSCode manually). The macOS script uses the [Homebrew](https://brew.sh) package manager while the Windows script uses the [Chocolatey](https://chocolatey.org/) package manager.
 
-See the Manual installation section for a more detailed explanation of the various pieces these scripts install.
+See the [Manual Installation](#manual-installation) section for a more detailed explanation of the various pieces these scripts install.
 
-## Windows
+### Windows
 
-Open up Command Prompt as an administrator by clicking on the "Start" button, typing "command prompt", and right clicking the search result labeled "Command Prompt" then choose "Run as administrator" in the resulting menu (see an example photo [here](TODO: fill this in)).
+Open up Command Prompt as an administrator by clicking on the "Start" button, typing "command prompt", and right clicking the search result labeled "Command Prompt" then choose "Run as administrator" in the resulting menu (see an example photo [next to the Windows bullet point](#python) in the Manual Installation section below).
 
 Once you have a shell open, `cd` to the `setup` directory in this repo holding the script and run `CMD /k windows.exe`.
 
-## macOS (& Linux & WSL)
+### macOS (& Linux & WSL)
 
 Open up Terminal, `cd` to the `setup` directory in this repo holding the script and run `./mac_os`.
 
-# Manual Installation
+## Manual Installation
 
 If either of the scripts mentioned above worked for you then ignore this section and skip ahead to the [Confirm Installation](#confirm-installation) section.
 
-## Python
+### Python
 
-First let's install Python![^1] Python has several versions, for this course we're using `Python 3.7`.[^2] This is the most up to date version. There are many people still using an older variant (`2.7`) but this has been sunsetted and will no longer be supported after 2020. In the interests of learning what will be the future of the language we're teaching `3.7`. If you've used `2.7` before the learning curve for `3.7` will be gentle as there aren't too many changes you'll have to worry about. To install follow the below instructions depending on your OS.[^3]
+First let's install Python! <sup id="a1">[1](#f1)</sup> Python has several versions, for this course we're using `Python 3.7`. <sup id="a2">[2](#f2)</sup> This is the most up to date version. There are many people still using an older variant (`2.7`) but this has been sunsetted and will no longer be supported after 2020. In the interests of learning what will be the future of the language we're teaching `3.7`. If you've used `2.7` before the learning curve for `3.7` will be gentle as there aren't too many changes you'll have to worry about. To install follow the below instructions depending on your OS. <sup id="a3">[3](#f3)</sup>
 
 **Note:** If you feel comfortable using a virtual environment manager like `Conda` feel free to use that for this course instead of the following instructions (if you don't know what this means then keep reading for the standard install instructions).
 
 - **macOS:** `Python 2.7` comes preinstalled on macOS. Unfortunately, since we want `3.7` we're going to have to install it separately. Our suggested method involves using a package manager called Homebrew. If you have any questions about this method or would like to install in a different way feel free to ask peer mentors about it at office hours. To use our recommended method follow [this guide](http://docs.python-guide.org/en/latest/starting/install3/osx/). Do everything up until (not including) the section titled "Pipenv & Virtual Environments".
 - **Windows:** Our suggested method involves a package manager called Chocolatey. If you have any questions about this method or would like to install in a different way feel free to ask peer mentors about it at office hours. To use our recommended method follw [this guide](http://docs.python-guide.org/en/latest/starting/install3/win/). Do everything up until (not including) the section titled "Pipenv & Virtual Environments".
 
-    **Note:** For installing Chocolatey I recommend using Command Prompt over Powershell since it involves one less step. Simply click on the "Start" button, type "command prompt" and right click on the search result labeled Command Prompt then choose `Run as administrator" in the resulting menu. See below for an example photo:
-
-    ![Run as Admin](./images/run_as_administrator.png "Run as admin"){height="3in"} \
+><img src="./images/run_as_administrator.png" align="right" alt="Run as admin" width="25%">
+>**Note:** For installing Chocolatey I recommend using Command Prompt over Powershell since it involves one less step. Simply click on the "Start" button, type "command prompt" and right click on the search result labeled Command Prompt then choose "Run as administrator" in the resulting menu. See the photo to the right for an example.
 
 - **Linux:** There are too many Linux variants to attempt to cover them all but general advice is use a package manager and go to office hours with any questions or difficulties installing.
 
-## Visual Studio Code
+<br /><br /><br /><br /><br /><br />
+
+### Visual Studio Code
 
 Next we're going to install the text editor we're using for this course. There are many different text editors out there that you're welcome to explore but for this course we're going to be using Visual Studio Code.
 
-Go to [this page](https://code.visualstudio.com/Download) and download the appropriate installer. Once the installer downloads follow the prompts to install (simply clicking next on each screen and accepting the defaults will work just fine).
+Go to [this page](https://code.visualstudio.com/Download) and download the appropriate installer. Once the download finishes follow the prompts to install (simply clicking next on each screen and accepting the defaults will work just fine).
 
-# Confirm Installation
+## Confirm Installation
 
-## Python
+### Python
 
-To confirm everything is working right open up your command line (Command Prompt on Windows, Terminal on macOS/Linux - likely already open if you used one of the scripts) and type `python` then hit Enter. You should see something like the following (this is an example run on Windows though it should look similar on every platform, really the only change is it will list OS specific architecture in the right hand corner, in this case it's `win32`, on recent macOS models it's `darwin`):
+To confirm everything is working right open up your shell (Command Prompt on Windows, Terminal on macOS/Linux - likely already open if you used one of the scripts) and type `python` then hit Enter. You should see something like the following (this is an example run on Windows though it should look similar on every platform, really the only change is it will list OS specific architecture in the right hand corner, in this case it's `win32`, on recent macOS models it's `darwin`):
 
-![Command Prompt](./images/confirm_windows_installation.png "Confirming Installation") \
+![Command Prompt](./images/confirm_windows_installation.png "Confirming Installation")
 
-If you see something similar and as long as your Python version says `3.7.<anything here>` you're all good! Go ahead and close your command line and move on to the next step.[^4] If not, come to see Sara or a peer mentor for help.
+If you see something similar and as long as your Python version says `3.7.<anything here>` you're all good! Go ahead and close your command line and move on to the next step. <sup id="a4">[4](#f4)</sup> If not, come to see Sara or a peer mentor for help.
 
 **Note:** If you see `2.7.<anything here>` instead, try typing `python3` then hitting enter and seeing if that gives you something like the image above with `3.7.<anything here>` for the version. If it does then feel free to ask a peer mentor how to make `python` launch `Python 3.7` by default but be aware that you can continue this guide swapping in `python3` anywhere you see `python` and `pip3` anywhere you see `pip`. If neither of these work try restarting your computer and running again, then go to a peer mentor for assistance if that doesn't change anything.
 
-## Visual Studio Code
+### Visual Studio Code
 
 Open VSCode however you normally open up applications and you should see a screen like this:
 
-![VSCode](./images/welcome.png "Welcome Page") \
+![VSCode](./images/welcome.png "Welcome Page")
 
 VSCode has almost unlimited configuration and customization options along with numerous capabilities that we won't be using in this class. Feel free to explore these as you'd like but for this guide we'll focus on a small subset of features.
 
-# Setting up Visual Studio Code
+## Setting up Visual Studio Code
 
 VSCode works well out of the box but there are still a few things we need to set up.
 
-## Add Python Support
+### Add Python Support
 
-First things first let's add Python support. To do so we need to install an extension and set VSCode's Python path. Almost everything I'm about to walk through can be done with keyboard shortcuts (which I'll try to list) if you like using them but I'll be prioritizing menu items as these are more universal across OSes. Note: if you see an error "Unknown configuration setting" while working through this section first try restarting VSCode before asking Sara or a TA for assistance.
+First things first let's add Python support. To do so we need to install an extension and set VSCode's Python path. Almost everything I'm about to walk through can be done with keyboard shortcuts (which I'll try to list) if you like using them but I'll be prioritizing menu items as these are more universal across OSes. Note: if you see an error "Unknown configuration setting" while working through this section first try restarting VSCode before asking Sara or a peer mentor for assistance.
 
-### Extension
+#### Extension
 
 First click on `View->Extensions` (macOS/Win: `(Cmd|Ctrl)+Shift+x` or click on the square icon at the bottom of the leftmost sidebar) and then type "Python" in the search box. We want to install the extension just titled "Python" which is made by Microsoft:
 
-![Extensions](./images/python_extension.png "Extensions") \
+![Extensions](./images/python_extension.png "Extensions")
 
-Click install beside that extension then click the reload button that shows up once installed. Perfect we now have Python support!
+Click install and tada 🎉, we now have Python support!
 
-### Python Path
+#### Python Path
 
-Open a new file by clicking `File->New File` (or `(Cmd|Ctrl)+N`). Next, set the language for this file to Python by clicking `View->Command Palette` (or `(Cmd|Ctrl)+Shift+P`) and type "language". From the list of results that pops up choose "Change Language Mode". Then type "Python" in the resulting search box and select Python from the list. Now look in the lower left hand corner (see below photo for an example) and confirm that it says `Python 3.7.<anything-else>`. If it does skip ahead to the next section titled **Extension**. If you don't see anything try restarting VSCode. If it shows `Python 2.<anything-else>` stick around and we'll fix it. **Note:** for Conda users you'll want to set this to the path to the `python` instance in the `bin` folder of your virtual environment.
+Open a new file by clicking `File->New File` (or `(Cmd|Ctrl)+N`). Next, set the language for this file to Python by clicking `View->Command Palette` (or `(Cmd|Ctrl)+Shift+P`) and type "language". From the list of results that pops up choose "Change Language Mode". Then type "Python" in the resulting search box and select Python from the list. Now look in the lower left hand corner (see below photo for an example) and confirm that it says `Python 3.7.<anything-else>`. If it does skip ahead to the [next section](#add-linting).
 
-![Python 3](./images/python_3.png "Python 3") \
+If you don't see anything try restarting VSCode.
 
-To make it so that you get `Python 3.7.<anything-else>` open up VSCode settings by clicking on the cog in the lower left then "Settings" or find the Settings option in the menu (`Code->Preferences->Settings` on macOS, `File->Preferences->Settings` on Windows) or use the keyboard shortcut `Cmd/Ctrl+,`. This will open two panes, in the right one (where it says "User Settings") we want to add the following code:
+If it shows `Python 2.<anything-else>` stick around and we'll fix it.
+
+>**Note:** for Conda users you'll want to set this to the path to the `python` instance in the `bin` folder of your virtual environment.
+
+![Python 3](./images/python_3.png "Python 3")
+
+To make it so that you get `Python 3.7.<anything-else>` we need to change a setting. VSCode allows editing settings through a graphical interface and a JSON file. We want to edit the JSON file. The easiest way to get to the JSON file to click `View->Command Palette` (or `(Cmd|Ctrl)+Shift+P`) and type `settings` then select the option "Preferences: Open Settings (JSON)". The photo below shows what selecting that option looks like. Feel free to ignore any settings that are already in the file.
+
+![VSCode Settings JSON](./images/vscode_settings_json.png "VSCode Settings JSON")
+
+We want to add the following code to this file:
 
 ```json
 {
@@ -105,24 +110,24 @@ To make it so that you get `Python 3.7.<anything-else>` open up VSCode settings 
 }
 ```
 
-You need to replace `<path_to_python_installation>` with the actual location of the Python 3 installation on your computer. On macOS for example this is the path: `/usr/local/bin/python3`. Note: on Windows this path would normally use backslashes but here you should use either forward slashes or double backslashes, e.g. `C:/Users/nathan/<rest of path>` or `C:\\Users\\nathan\\<rest of path>` (if you're curious why ask one of the TAs about escape characters). The easiest way to find where Python 3 is installed on your computer is to run one of the following commands (depending on your OS) in terminal or command prompt:
+You need to replace `<path_to_python_installation>` with the actual location of the Python 3 installation on your computer. On macOS for example this is the path: `/usr/local/bin/python3`. Note: on Windows this path would normally use backslashes but here you should use either forward slashes or double backslashes, e.g. `C:/Users/nathan/<rest of path>` or `C:\\Users\\nathan\\<rest of path>` (if you're curious why ask one of the peer mentors about escape characters). The easiest way to find where Python 3 is installed on your computer is to run one of the following commands (depending on your OS) in terminal or command prompt:
 
 ```bash
-where python # Windows
 which python # macOS/Linux
+where python # Windows
 ```
 
 Here's an example of the output (run on macOS, note I'm running `which python3` because I have multiple Python installations, you should not type the 3 unless back in the confirm installation section running `python` didn't show `3.7.<anything-else>`):
 
-![Which Python](./images/which_python.png "Which Python"){width="3in"} \
+![Which Python](./images/which_python.png "Which Python")
 
-Now write the path that `which/where python` gives you in place of `"<path_to_python_installation>"` in the settings pane. At the end you should have something that looks like this:
+Now write the path that `which/where python` gives you in place of `"<path_to_python_installation>"` in the settings pane. At the end you should have something that looks like this (again don't worry about other settings in the same file):
 
-![Python Path](./images/python_path.png "Python Path") \
+![Updated VSCode Settings JSON](./images/vscode_settings_json_updated.png "Updated VSCode Settings JSON")
 
 Confirm that after restarting VSCode and selecting the language Python as before you now see `3.7.<anything>` in the lower left hand corner. If not go to mentor hours. Whew, okay let's move on to setting up the rest of our Python support!
 
-## Add Linting
+### Add Linting
 
 Linting is a form of statically checking programs to catch certain errors before running. The linter we install will help by checking types (Python 3's support for type hints is another reason we're using it over Python 2) and preventing silly mistakes.
 
@@ -134,11 +139,15 @@ pip install mypy
 
 You should see something like this (run on macOS):
 
-![Pip Install MyPy](./images/mypy_install.png "Pip Install MyPy") \
+![Pip Install MyPy](./images/mypy_install.png "Pip Install MyPy")
 
 This command will install our linter (if you're curious `pip` is a package manager bundled with Python 3 for installing Python libraries that we'll discuss more later in the course). Next, we need to configure our linter.
 
-To configure our linter we need to open up VSCode's settings. Click on the cog in the lower left then "Settings" or find the Settings option in the menu (`Code->Preferences->Settings` on macOS, `File->Preferences->Settings` on Windows) or use the keyboard shortcut `Cmd/Ctrl+,`. This will open two panes, in the right one (where it says "User Settings") we want to add the following code (**Note:** the whole settings is a single JSON dictionary, so if you added the python path previously the settings below would be two more lines inside the outer curly brackets, not inside a nested pair of brackets):
+VSCode allows editing settings through a graphical interface and a JSON file. We want to edit the JSON file. The easiest way to get to the JSON file to click `View->Command Palette` (or `(Cmd|Ctrl)+Shift+P`) and type `settings` then select the option "Preferences: Open Settings (JSON)". The photo below shows what selecting that option looks like. Feel free to ignore any settings that are already in the file.
+
+![VSCode Settings JSON](./images/vscode_settings_json.png "VSCode Settings JSON")
+
+We want to add the following lines:
 
 ```json
 {
@@ -147,35 +156,37 @@ To configure our linter we need to open up VSCode's settings. Click on the cog i
 }
 ```
 
+>**Note:** the whole settings is a single JSON dictionary, so if you added the python path previously the settings below would be two more lines inside the outer curly brackets, not inside a nested pair of brackets (see the photo below)
+
 After adding these our settings file will look something like this (potentially with an extra setting from modifying our path if you had to do that earlier):
 
-![Linter Settings](./images/linter_settings.png "Linter Settings"){height="2in"} \
+![Linter Settings](./images/linter_settings.png "Linter Settings")
 
-Let's test this out. Open a file and switch the language to Python by clicking `View->Command Palette` (or `(Cmd|Ctrl)+Shift+P`) and type "language". From the list of results that pops up choose "Change Language Mode". Then type "Python" in the resulting search box and select Python from the list. Once we're in Python type the following in your new file:
+Let's test this out. Open a new file and add the following:
 
 ```python
 'hi' + 1
 ```
 
-Save the file with any name and you should notice some weird red squiggles under the `'hi'` (if you don't see these try restarting VSCode). Hover over this to see the message screenshotted below:
+Save the file with the `.py` extension (e.g. `foo.py`) and you should notice some weird red squiggles under the `'hi'` (if you don't see these try restarting VSCode). Hover over this to see the message screenshotted below:
 
-![Linter Error](./images/linting_error.png "Linter Error") \
+![Linter Error](./images/linting_error.png "Linter Error")
 
 This message is telling us we can't add a `str` (Python's shorthand for `string`) and an `int` (an integer). This sort of type checking will come in super helpful as we continue to write programs later in this class. Okay now with everything set up let's write our first program and run it!
 
-# Working in Python
+## Working in Python
 
-In this class we'll be writing Python code in VSCode and running our programs from either VSCode or the Command Line. First let's write a simple program. Open a new file by going to `File->New File` (or `(Cmd|Ctrl+n`) and set the language to Python. We'll simply write `print('Hello World!')` on the first line of our file. Like below:
+In this class we'll be writing Python code in VSCode and running our programs from either VSCode or the Command Line. First let's write a simple program. Replace the code we just wrote with `print('Hello World!')`, like below:
 
-![Hello World](./images/hello_world.png "Hello World!"){width="6in"} \
+![Hello World](./images/hello_world.png "Hello World!")
 
-Now save this file (`File->Save` or `(Cmd|Ctrl)+s`) calling it whatever you want making sure to have a `.py` extension at the end of it (VSCode should insert this extension for us since we changed the language mode to Python earlier). We've written a Python program, now let's run it!
+Now save this file (`File->Save` or `(Cmd|Ctrl)+s`). We've written a Python program, now let's run it!
 
-## VSCode
+### VSCode
 
-### Setting Our Launch Configuration
+#### Setting Our Launch Configuration
 
-First we need to set our launch configuration. Open up settings again (see the `Add Linting` section) and add the following code:
+First we need to set our launch configuration. Open up settings again (see the [Add Linting](#add-linting) section) and add the following code:
 
 ```json
 "launch": {
@@ -192,17 +203,17 @@ First we need to set our launch configuration. Open up settings again (see the `
 }
 ```
 
-### Running Code
+#### Running Code
 
 Okay now let's run our code! Go to `View->Debug` (or click on the icon with the crossed out bug in the left sidebar). In the resulting view click the dropdown next to the green play button in the top left and from the menu select `Global Python` (the name of the launch configuration we just added in settings). Now click the green play button and you should see something like this (**Note:** if you see a dropdown with with multiple options such as `Python Experimental` choose the option that just says `Python`):
 
-![Run Python VSCode Debugger](./images/debugger.png "Run Python VSCode Debugger") \
+![Run Python VSCode Debugger](./images/debugger.png "Run Python VSCode Debugger")
 
-Now click the green play button button in the center at the top of your screen to view the output of your program in the Debug Console on the bottom of the screen. Don't worry about what everything in this view means, we'll get to it all over the first couple weeks of class. Whew, you're officially done with the first assignment! [^5] There isn't anything to turn in so as long as you've successfully completed everything in this guide you're all good! The rest of this guide is optional if you're interested in playing around more with python or VSCode. Feel free to do as much or little of it as you'd like.
+Now click the green play button button in the center at the top of your screen to view the output of your program in the Debug Console on the bottom of the screen. Don't worry about what everything in this view means, we'll get to it all over the first couple weeks of class. Whew, you're officially done with the first assignment! <sup id="a5">[5](#f5)</sup>  There isn't anything to turn in so as long as you've successfully completed everything in this guide you're all good! The rest of this guide is optional if you're interested in playing around more with python or VSCode. Feel free to do as much or little of it as you'd like.
 
-## Just For Fun
+### Just For Fun
 
-### Command Line: Integrated Terminal
+#### Command Line: Integrated Terminal
 
 So we just ran Python using the VSCode debugger now let's try running it through the command line! VSCode actually has an integrated command line that we can open by going to `View->Integrated Terminal`. Note: for Windows users this will likely open to Powershell, change this by clicking `View->Command Palette` (or `(Cmd|Ctrl)+Shift+p`) then type "select default shell", choose the "Terminal: Select default shell" option and in the resulting menu select "Command Prompt".
 
@@ -213,29 +224,33 @@ For running Python files from the command line we need to be in the same folder 
 
 Once we're in the folder that our Python file is in simply type `python <filename>`. Do this with the file you've just written, so if you named the file `hello_world.py` you'd write `python hello_world.py` and you should see 'Hello World!' outputted to the screen like below (note that you want to write the full filename with the ".py" extension):
 
-![Run Python Integrated Terminal](./images/integrated_terminal.png "Run Python Integrated Terminal") \
+![Run Python Integrated Terminal](./images/integrated_terminal.png "Run Python Integrated Terminal")
 
-### Command Line Part II: This Time It's External
+#### Command Line Part II: This Time It's External
 
 We've now run python code from the integrated terminal but we can also run code from an external terminal like we did to confirm installation. Open up your terminal (Command Prompt for Windows) like we did before, navigate to the folder just like we did for the integrated terminal and once again type `python <filename>` to see 'Hello World!' like below:
 
-![Run Python External Terminal](./images/external_terminal.png "Run Python External Terminal") \
+![Run Python External Terminal](./images/external_terminal.png "Run Python External Terminal")
 
-## VSCode Tips
+### VSCode Tips
 
 Here's a few tips and things to explore in VSCode:
 
-1. Go to `View->Explorer` (or click on the top icon in the left sidebar that looks like overlapping documents) to see a list of the current open files and a button to open a folder. Click on that button and choose a random folder on your computer to see that folder and its contents and be able to navigate it and open files from it within VSCode. This has the added benefit that the integrated terminal will automatically open to the opened folder you opened. The below screenshot shows my VSCode with a folder called `grading` open. I can then see and open any of the subfolders and files in this folder more easily (`(Cmd|Ctrl)+P` opens a file searcher that searches through the open folder). ![Open Folder](./images/open_folder.png "Open Folder") \
+1. Go to `View->Explorer` (or click on the top icon in the left sidebar that looks like overlapping documents) to see a list of the current open files and a button to open a folder. Click on that button and choose a random folder on your computer to see that folder and its contents and be able to navigate it and open files from it within VSCode. This has the added benefit that the integrated terminal will automatically open to the opened folder you opened. The below screenshot shows my VSCode with a folder called `grading` open. I can then see and open any of the subfolders and files in this folder more easily (`(Cmd|Ctrl)+P` opens a file searcher that searches through the open folder). ![Open Folder](./images/open_folder.png "Open Folder")
 2. Go to `File->Preferences->Color Theme` if you'd like to adjust the colors of the editor. More themes can be found [here](https://marketplace.visualstudio.com/search?target=VSCode&category=Themes&sortBy=Downloads).
 3. Go to `File->Preferences->File Icon Theme` if you'd like icons in tabs or next to files/folders in the Explorer view. More icon themes can be found [here](https://marketplace.visualstudio.com/search?target=VSCode&category=Themes&sortBy=Downloads).
 4. Go to `File->Preferences->Keyboard Shortucts` or `File->Preferences->Settings` to play around with the default settings or keybindings.
 
-[^1]: Python is a widely used programming language older than us. Click [here](https://docs.python.org/3/) to view the official documentation.
+---
 
-[^2]: Python versions have three numbers, for example Python `3.7.1` but for this course any Python version that starts with `3.7` will work just fine!
+<!-- footnotes - https://stackoverflow.com/a/32119820 -->
 
-[^3]: Linux users try the Confirm Installation step and if you get the expected result then you're all good and can keep going with this guide. If not go to Sara or one of the peer mentors for help.
+<b id="f1">1:</b> Python is a widely used programming language older than us. Click [here](https://docs.python.org/3/) to view the official documentation. [↩](#a1)
 
-[^4]: What we just started by typing `python` and hitting enter is called the Python Interpreter. This is an interactive environment like the REPL we had in 111 where you can write Python code and immediately see the result. For an example type `5+5` and hit enter. The interpreter will display 10 and then wait for your next instruction. Feel free to play around in the shell further if you'd like. To exit the shell and get back to your regular command line type `exit` and hit enter for macOS, on Windows type `exit()` and hit enter.
+<b id="f2">2:</b> Python versions have three numbers, for example Python `3.7.1` but for this course any Python version that starts with `3.7` will work just fine! [↩](#a2)
 
-[^5]: [Hip hip hooray!](https://media.giphy.com/media/26gsfdArwyEnXnDGw/giphy.gif)
+<b id="f3">3:</b> Linux users try the Confirm Installation step and if you get the expected result then you're all good and can keep going with this guide. If not go to Sara or one of the peer mentors for help. [↩](#a3)
+
+<b id="f4">4:</b> What we just started by typing `python` and hitting enter is called the Python Interpreter. This is an interactive environment like the REPL we had in 111 where you can write Python code and immediately see the result. For an example type `5+5` and hit enter. The interpreter will display 10 and then wait for your next instruction. Feel free to play around in the shell further if you'd like. To exit the shell and get back to your regular command line type `exit` and hit enter for macOS, on Windows type `exit()` and hit enter. [↩](#a4)
+
+<b id="f5">5:</b> [Hip hip hooray!](https://media.giphy.com/media/26gsfdArwyEnXnDGw/giphy.gif) [↩](#a5)
