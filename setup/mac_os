@@ -105,7 +105,7 @@ function install_homebrew() {
   }
 
   local script='https://raw.githubusercontent.com/Homebrew/install/master/install'
-  /usr/bin/ruby -e "$(curl -fsSL ${script})" || {
+  /usr/bin/ruby -e "$(curl -fsSL "$script")" || {
     echo 'Installing homebrew failed, ask a peer mentor for help.'
     exit 1
   }
@@ -178,7 +178,7 @@ function configure_vscode() {
   }
 
   # TODO: better error handling here
-  local vscode_settings_file_url='https://raw.githubusercontent.com/cs-nu/295/master/assignments/0/setup/vscode_settings.json?token=AJTInzLZ-uLyXY86RuTZk1QM49wMW2bmks5cqtmKwA%3D%3D'
+  local vscode_settings_file_url='https://raw.githubusercontent.com/nu-eecs-295/0/master/setup/vscode_settings.json'
   local python_path="$(which $(
     is_python_installed | grep -q '3' &&
       # ref - https://stackoverflow.com/a/48042092

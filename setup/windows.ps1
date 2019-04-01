@@ -102,7 +102,7 @@ function Configure-VSCode {
   }
 
   $vscode_settings_file_path = "$env:APPDATA\Code\User\settings.json"
-  $vscode_settings_file_url='https://raw.githubusercontent.com/cs-nu/295/master/assignments/0/setup/vscode_settings.json?token=AJTInzLZ-uLyXY86RuTZk1QM49wMW2bmks5cqtmKwA%3D%3D'
+  $vscode_settings_file_url='https://raw.githubusercontent.com/nu-eecs-295/0/master/setup/vscode_settings.json'
 
   # TODO: better error handling here
   (New-Object System.Net.WebClient).
