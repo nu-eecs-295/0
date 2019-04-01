@@ -1,0 +1,16 @@
+{
+  "python.pythonPath": "<path_to_python_installation>",
+  "python.linting.mypyEnabled": true,
+  "python.linting.pylintEnabled": false,
+  "launch": {
+      "configurations": [
+          {
+              "name": "Python - 295",
+              "type": "python",
+              "request": "launch",
+              "program": "${file}",
+              "internalConsoleOptions": "openOnSessionStart"
+          }
+      ]
+  }
+}

@@ -6,41 +6,68 @@
 
 # this script is expected to work on macOS. On Linux and Windows Subsystem for
 # Linux (WSL) it should theoretically install everything except Visual Studio
-# Code but we make no guarantees. To install Visual Studio Code see their
-# website - https://code.visualstudio.com
+# Code but we make no guarantees.
 
-# for manual macOS instructions see here - https://docs.python-guide.org/starting/install3/osx/
+# Note: this script uses Homebrew (Linuxbrew on Linux/WSL) for cross
+# compatibility. If you'd prefer to your distribution's native package manager
+# you must install each package manually.
+# ref - http://brew.sh
+
+# To install Visual Studio Code see here - https://code.visualstudio.com
+
+# for manual macOS instructions see here:
+# - https://docs.python-guide.org/starting/install3/osx/
 # too many Linux variants to offer detailed manual instructions sadly :(
 
-# on macOS
-[[ $(uname) == 'Darwin' ]] && {
-  # only attempt to install if not already installed
-  xcode-select -p > /dev/null 2>&1 || xcode-select --install || {
-    echo 'Installing developer tools failed, try installing developer tools'\
-          'through the manual instructions then rerun this script.'
-    exit 1
+# << utilities >>
+
+# check if given name matches installed app
+# adapted from https://stackoverflow.com/a/12900116
+function is_app_installed() {
+  local name="$1"
+  # translate to a bundle ID
+  local name_script="id of application \"$name\""
+  local bundle_id=$(osascript -e "$name_script" 2>/dev/null) || return 1
+
+  # double check that we can find bundle
+  # let AppleScript determine the full bundle path
+  local bundle_id_script="tell application \"Finder\" to POSIX path of (get"
+  bundle_id_script+=" application file id \"$bundle_id\" as alias)"
+  osascript -e "$bundle_id_script" > /dev/null 2>&1 || return 1
+}
+
+# adds given string to appropriate profiles file(s), then sources them
+function add_to_profile_and_source() {
+  # shell will try `~/.bash_profile`, `~/.bash_login` and `~/.profile` in
+  # that order loading the first it finds, therefore add to
+  # `~/.bash_profile` if it exists, else `~/.profile`
+  # ref - https://superuser.com/a/176412
+  test -r "$HOME/.bash_profile" && {
+    echo "$1" >> "$HOME/.bash_profile" && source "$HOME/.bash_profile"
+  } || {
+    echo "$1" >> "$HOME/.profile" && source "$HOME/.profile"
   }
 }
 
-[[ $(uname) == 'Darwin' ]] && { # on macOS
-  # require ruby dependency
-  command -v ruby > /dev/null 2>&1 || {
-    # install Homebrew - https://brew.sh
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" || {
-      echo 'Installing homebrew failed, ask a peer mentor for help.'
-      exit 1
+# << install various pieces >>
+
+# install Linuxbrew if not already installed
+# ref - https://docs.brew.sh/Homebrew-on-Linux#install
+function install_linuxbrew() {
+  # abort if already installed
+  command -v brew > /dev/null 2>&1 && return
+
+  local script='https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh'
+  sh -c "$(curl -fsSL ${script})" && {
+    # script attempts to install in '/home/linuxbrew/.linuxbrew' w/ `sudo`
+    test -d '/home/linuxbrew/.linuxbrew' && {
+      eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+    } || {
+      # falls back to '~/.linuxbrew' if that fails
+      test -d '~/.linuxbrew' && eval $(~/.linuxbrew/bin/brew shellenv)
     }
-  } || {
-    echo "You don't seem to have ruby installed. This should come by default"\
-          'on macOS, see a peer mentor for help.'
-    exit 1
-  }
-} || { # on Linux/WSL
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)" && {
-    test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
-    test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-    test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
-    echo "eval \$($(brew --prefix)/bin/brew shellenv)" >> ~/.profile
+
+    add_to_profile_and_source "eval \$($(brew --prefix)/bin/brew shellenv)"
   } || {
     echo 'Installation failed. Make sure you have the expected dependencies -'\
           'https://docs.brew.sh/Homebrew-on-Linux#linuxwsl-requirements. If'\
@@ -49,12 +76,46 @@
   }
 }
 
-# add Homebrew installation directory to PATH environment variable if it's not
-# already there
-# TODO: may be unnecessary, test having never installed Homebrew before
-echo "$PATH" | grep -q "/usr/local/bin" || {
-  echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.profile && {
-    source ~/.profile
+# install Apple's developer tools (macOS only)
+function install_developer_tools() {
+  # abort early if not macOS
+  [[ $(uname) == 'Darwin' ]] || return
+
+  # only attempt to install if not already installed
+  xcode-select -p > /dev/null 2>&1 || xcode-select --install || {
+    echo 'Installing developer tools failed, try installing developer tools'\
+          'through the manual instructions then rerun this script.'
+    exit 1
+  }
+}
+
+# install Homebrew if not already installed
+# ref - https://brew.sh/#install
+function install_homebrew() {
+  install_developer_tools
+
+  # abort if already installed
+  command -v brew > /dev/null 2>&1 && return
+
+  # if not already installed, check dependency, exit script if not installed
+  command -v ruby > /dev/null 2>&1 || {
+    echo "You don't seem to have ruby installed. See a peer mentor for help\n"
+    echo 'Note: this should come by default on macOS.'
+    exit 1
+  }
+
+  local script='https://raw.githubusercontent.com/Homebrew/install/master/install'
+  /usr/bin/ruby -e "$(curl -fsSL ${script})" || {
+    echo 'Installing homebrew failed, ask a peer mentor for help.'
+    exit 1
+  }
+
+  # add Homebrew installation directory to PATH environment variable if it's not
+  # already there
+  # TODO: may be unnecessary, test having never installed Homebrew before
+  echo "$PATH" | grep -q "/usr/local/bin" || {
+    add_to_profile_and_source 'export PATH="/usr/local/bin:$PATH"'
+
     echo "$PATH" | grep -q "/usr/local/bin" || {
       echo 'Adding to PATH and/or sourcing seems to have failed, ask a peer'\
             'mentor for help.'
@@ -62,42 +123,143 @@ echo "$PATH" | grep -q "/usr/local/bin" || {
   }
 }
 
+function setup_git() {
+  # check if git installed, attempt to install through brew if not
+  command -v git > /dev/null 2>&1 || brew install git || {
+    echo 'Git failed to install. Ask a peer mentor for help.'
+    exit 1
+  }
+
+  # set git user.name and user.email variables if not already
+  # needed to interact with GitHub
+  git config --list | grep -q 'user.name' || {
+    # add trailing newline, ref - https://stackoverflow.com/a/15696250
+    read -p $'What is your name?\n' git_user_name
+    git config --global user.name "$git_user_name"
+  }
+
+  git config --list | grep -q 'user.email' || {
+    read -p $'What is your email? (what you use for GitHub)\n' git_user_email
+    git config --global user.email "$git_user_email"
+  }
+}
+
 # install visual studio code if not already installed (only on macOS)
-# Visual Studio Code website - https://code.visualstudio.com
-[[ $(uname) == 'Darwin' ]] && {
-  brew cask list visual-studio-code > /dev/null 2>&1 || {
-    brew cask install visual-studio-code || {
-      echo 'Installing VSCode failed, download the installer here - '\
-            'https://code.visualstudio.com/ and run manually. Rerun this'\
-            'script after installing.'
+# ref - https://code.visualstudio.com
+function install_vscode() {
+  # abort early if not macOS
+  [[ $(uname) == 'Darwin' ]] || return
+  # abort early if already installed
+  is_app_installed 'visual studio code' && return
+
+  brew cask install visual-studio-code || {
+    echo 'Installing VSCode failed, download the installer here - '\
+          'https://code.visualstudio.com/ and run manually. Rerun this script'\
+          'after installing.'
+    exit 1
+  }
+}
+
+function install_vscode_extensions() {
+  # TODO: understand why `-q` flag for grep here causes weird `SIGPIPE` error
+  code --list-extensions | grep 'ms-python.python' > /dev/null || {
+    code --install-extension 'ms-python.python'
+  }
+}
+
+# add user settings
+function configure_vscode() {
+  # bail if you have a settings file, must manually add in that case
+  [[ -f "$HOME/Library/Application Support/Code/User/settings.json" ]] && {
+    echo "You seem to already have some configured settings. You'll need to"\
+          "manually add settings if you haven't already (see the manual"\
+          "installation guide).\n"
+    return 1
+  }
+
+  # TODO: better error handling here
+  local vscode_settings_file_url='https://raw.githubusercontent.com/cs-nu/295/master/assignments/0/setup/vscode_settings.json?token=AJTInzLZ-uLyXY86RuTZk1QM49wMW2bmks5cqtmKwA%3D%3D'
+  local python_path="$(which $(
+    is_python_installed | grep -q '3' &&
+      # ref - https://stackoverflow.com/a/48042092
+      echo 'python3' ||
+      echo 'python'
+  ))"
+  curl $vscode_settings_file_url |
+    sed -e "s|<path_to_python_installation>|$python_path|g" \
+    > "$HOME/Library/Application Support/Code/User/settings.json"
+}
+
+function setup_vscode {
+  install_vscode
+  install_vscode_extensions
+  configure_vscode
+}
+
+# checks if a an appropriate python version is installed
+#
+# a little brittle here, would be nicer to see if there are any versions later
+# than 3.6 installed in the future
+#
+# purposely outputs which python version students should use
+function is_python_installed() {
+  # `python -V` wrote to `stderr` for versions before `3.4`, therefore pipe both
+  # `stderr` & `stdout` to grep
+  # ref - https://stackoverflow.com/a/32401305
+  (
+    command -v python > /dev/null 2>&1 && python -V 2>&1 | grep -q -E "3.7|3.8"
+  ) && {
+    echo "Use python & pip"
+    return 0
+  } || {
+    (
+      # no need to redirect `stderr`
+      command -v python3 > /dev/null 2>&1 && python3 -V | grep -q -E "3.7|3.8"
+    ) && {
+      echo "Use python3 & pip3"
+      return 0
+    }
+  }
+
+  return 1
+}
+
+# echo the python appropriate python (or pip if passed) version
+function which_python() {
+  # $1 - name of command to output (only valid inputs are `python` & `pip`
+  local command="${1:-python}"
+  is_python_installed | grep -q '3' &&
+    # ref - https://stackoverflow.com/a/48042092
+    echo "${command}3" ||
+    echo "${command}"
+}
+
+# install an appropriate version of Python if not already installed
+function setup_python() {
+  is_python_installed > /dev/null || brew install python || {
+    echo 'Installing Python failed, ask a peer mentor or try manual'\
+          'instructions'
+    exit 1
+  } && {
+    # add linter
+    $(which_python pip) install mypy > /dev/null || {
+      echo 'Failed to install mypy (linter), ask a peer mentor for help or try'\
+            'manual instructions'
+      exit 1
     }
   }
 }
 
-# install Python if we don't see a `3.7` version
-# a little brittle here, would be nicer to see if there are any versions later
-# than 3.6 installed in the future
-brew list --versions python | grep -q "3.7" || brew install python || {
-  echo 'Installing Python failed, ask a peer mentor for help.'
-}
+# <<<<<<<< script execution starts here >>>>>>>>
+
+# install Hombrew (and developer tools dependency) on macOS - https://brew.sh
+# install Linuxbrew on Linux/WSL - https://docs.brew.sh/Homebrew-on-Linux
+[[ $(uname) == 'Darwin' ]] && install_homebrew || install_linuxbrew
+
+setup_python
+# Linux/WSL users CANNOT install VSCode through brew
+[[ $(uname) == 'Darwin' ]] && setup_vscode
+setup_git
 
 # let student know whether they can use `python` & `pip` or `python3` & `pip3`
-# same caveat about version numbers as above
-# could also use `command -v python3`, inverting the logic. use version numbers
-# to default to `python` over `python3`
-
-# `python -V` wrote to `stderr` for versions before `3.4`, therefore pipe both
-# `stderr` & `stdout` to grep
-# ref - https://stackoverflow.com/a/32401305
-echo "\n"
-python -V 2>&1 | grep -q "3.7" && {
-  echo "All done! 🎉 Use python & pip"
-} || {
-  # no need to redirect `stderr`
-  python3 -V | grep -q "3.7" && {
-    echo "All done! 🎉 Use python3 & pip3"
-  } || {
-    echo 'Something seems to have gone wrong with your python installation,'\
-          'ask a peer mentor or the professor for help.'
-  }
-}
+is_python_installed
